@@ -254,7 +254,7 @@ class _HomeScreenState
 
                       Text(
 
-                        "Bonjour 👋",
+                        "Bienvenue 👋",
 
                         style: TextStyle(
 
@@ -360,7 +360,9 @@ class _HomeScreenState
                               builder: (_) =>
                                   ConversationsScreen(),
                             ),
-                          );
+                          ).then((_) {
+                            loadCounts();
+                          });
                         },
                       ),
 
@@ -514,29 +516,29 @@ class _HomeScreenState
 
               if (result == true) {
 
-  final prefs =
-      await SharedPreferences.getInstance();
+                final prefs =
+                    await SharedPreferences.getInstance();
 
-  int current =
-      prefs.getInt(
-        "documentBadge",
-      ) ?? 0;
+                int current =
+                    prefs.getInt(
+                      "documentBadge",
+                    ) ?? 0;
 
-  await prefs.setInt(
+                await prefs.setInt(
 
-    "documentBadge",
+                  "documentBadge",
 
-    current + 1,
-  );
+                  current + 1,
+                );
 
-  loadDocumentBadge();
+                loadDocumentBadge();
 
-  setState(() {
+                setState(() {
 
-    objetsFuture =
-        ApiService.fetchObjets();
-  });
-}
+                  objetsFuture =
+                      ApiService.fetchObjets();
+                });
+              }
             },
           ),
 
@@ -796,128 +798,67 @@ class _HomeScreenState
       // BOTTOM NAVIGATION
       // =========================
 
-      bottomNavigationBar:
-          BottomNavigationBar(
+      bottomNavigationBar: Container(
 
-        currentIndex:
-            currentIndex,
+        margin: EdgeInsets.all(12),
 
-        type:
-            BottomNavigationBarType
-                .fixed,
+        padding: EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
 
-        selectedItemColor:
-            Color(0xFF3E6F55),
+        decoration: BoxDecoration(
 
-        elevation: 10,
+          color: Color(0xFF3E6F55),
 
-        onTap: (index) async {
+          borderRadius:
+              BorderRadius.circular(30),
 
-          setState(() {
+          boxShadow: [
 
-            currentIndex = index;
-          });
+            BoxShadow(
 
-          if (index == 1) {
+              color: Colors.black12,
 
-            Navigator.pushNamed(
-              context,
-              '/search',
-            );
+              blurRadius: 10,
 
-          }
+              offset: Offset(0, 4),
+            ),
+          ],
+        ),
 
-          else if (index == 2) {
+        child: Row(
 
-            final prefs =
-                await SharedPreferences
-                    .getInstance();
+          mainAxisAlignment:
+              MainAxisAlignment.spaceAround,
 
-            await prefs.setInt(
-              "documentBadge",
+          children: [
+
+            navItem(
               0,
-            );
-
-            loadDocumentBadge();
-
-            Navigator.pushNamed(
-              context,
-              '/documents',
-            );
-          }
-
-          else if (index == 3) {
-
-            Navigator.pushNamed(
-              context,
-              '/profile',
-            );
-          }
-        },
-
-        items: [
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Accueil",
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: "Recherche",
-          ),
-
-          BottomNavigationBarItem(
-
-            icon: Stack(
-
-              children: [
-
-                Icon(Icons.description),
-
-                if (documentBadge > 0)
-
-                  Positioned(
-
-                    right: 0,
-
-                    child: Container(
-
-                      padding:
-                          EdgeInsets.all(4),
-
-                      decoration: BoxDecoration(
-
-                        color: Colors.red,
-
-                        shape: BoxShape.circle,
-                      ),
-
-                      child: Text(
-
-                        documentBadge
-                            .toString(),
-
-                        style: TextStyle(
-
-                          color: Colors.white,
-
-                          fontSize: 8,
-                        ),
-                      ),
-                    ),
-                  )
-              ],
+              Icons.home,
+              "Accueil",
             ),
 
-            label: "Docs",
-          ),
+            navItem(
+              1,
+              Icons.search,
+              "Recherche",
+            ),
 
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profil",
-          ),
-        ],
+            navItem(
+              2,
+              Icons.description,
+              "Docs",
+            ),
+
+            navItem(
+              3,
+              Icons.person,
+              "Profil",
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1029,6 +970,131 @@ class _HomeScreenState
   }
 
   // =========================
+  // NAV ITEM
+  // =========================
+
+  Widget navItem(
+
+    int index,
+
+    IconData icon,
+
+    String label,
+
+  ) {
+
+    bool isSelected =
+        currentIndex == index;
+
+    return GestureDetector(
+
+      onTap: () async {
+
+        setState(() {
+
+          currentIndex = index;
+        });
+
+        if (index == 1) {
+
+          Navigator.pushNamed(
+            context,
+            '/search',
+          );
+        }
+
+        else if (index == 2) {
+
+          final prefs =
+              await SharedPreferences
+                  .getInstance();
+
+          await prefs.setInt(
+            "documentBadge",
+            0,
+          );
+
+          loadDocumentBadge();
+
+          Navigator.pushNamed(
+            context,
+            '/documents',
+          );
+        }
+
+        else if (index == 3) {
+
+          Navigator.pushNamed(
+            context,
+            '/profile',
+          );
+        }
+      },
+
+      child: AnimatedContainer(
+
+        duration:
+            Duration(milliseconds: 250),
+
+        padding:
+            EdgeInsets.symmetric(
+
+          horizontal: 14,
+
+          vertical: 5,
+        ),
+
+        decoration: BoxDecoration(
+
+          color: isSelected
+
+              ? Colors.white
+
+              : Colors.transparent,
+
+          borderRadius:
+              BorderRadius.circular(20),
+        ),
+
+        child: Column(
+
+          mainAxisSize:
+              MainAxisSize.min,
+
+          children: [
+
+            Icon(
+
+              icon,
+
+              color: Colors.black,
+
+              size: 20,
+            ),
+
+            SizedBox(height: 4),
+
+            Text(
+
+              label,
+
+              style: TextStyle(
+
+                color: Colors.black,
+
+                fontWeight:
+                    FontWeight.w600,
+
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // =========================
   // CATEGORY CHIP
   // =========================
 
@@ -1076,9 +1142,9 @@ class _HomeScreenState
 
                 selected
 
-                    ? Color(0xFF3E6F55)
+                    ? Colors.white
 
-                    : Colors.white,
+                    : Color(0xFF3E6F55),
 
             borderRadius:
                 BorderRadius.circular(
@@ -1108,9 +1174,9 @@ class _HomeScreenState
 
                   selected
 
-                      ? Colors.white
+                      ? Colors.black
 
-                      : Colors.black,
+                      : Colors.white,
 
               fontWeight:
                   FontWeight.w600,
@@ -1151,9 +1217,25 @@ class _HomeScreenState
 
           onPressed: onTap,
 
-          icon: Icon(icon),
+          icon: Icon(
+            icon,
+            color: Colors.white,
+            size: 22,
+          ),
 
-          label: Text(text),
+          label: Text(
+
+            text,
+
+            style: TextStyle(
+
+              color: Colors.white,
+
+              fontWeight: FontWeight.bold,
+
+              fontSize: 15,
+            ),
+          ),
 
           style:
               ElevatedButton.styleFrom(
@@ -1262,9 +1344,7 @@ class _HomeScreenState
             ClipRRect(
 
               borderRadius:
-                  BorderRadius.circular(
-                15,
-              ),
+                  BorderRadius.circular(15),
 
               child:
 
@@ -1287,11 +1367,55 @@ class _HomeScreenState
 
                           height: 65,
 
-                          color:
-                              Colors.grey[200],
+                          decoration: BoxDecoration(
+
+                            color:
+                                Color(0xFFE8F1EC),
+
+                            borderRadius:
+                                BorderRadius.circular(
+                              18,
+                            ),
+                          ),
 
                           child: Icon(
-                            Icons.image,
+
+                            obj.categorie
+                                        .toLowerCase() ==
+                                    "telephone"
+
+                                ? Icons.phone_android
+
+                                : obj.categorie
+                                            .toLowerCase() ==
+                                        "sac"
+
+                                    ? Icons.work
+
+                                    : obj.categorie
+                                                .toLowerCase() ==
+                                            "cle"
+
+                                        ? Icons.key
+
+                                        : obj.categorie
+                                                    .toLowerCase() ==
+                                                "portefeuille"
+
+                                            ? Icons.wallet
+
+                                            : obj.categorie
+                                                        .toLowerCase() ==
+                                                    "montre"
+
+                                                ? Icons.watch
+
+                                                : Icons.inventory_2,
+
+                            size: 34,
+
+                            color:
+                                Color(0xFF3E6F55),
                           ),
                         ),
             ),

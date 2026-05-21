@@ -12,8 +12,11 @@ class ChatScreen
 
   final int receiverId;
 
+  final String receiverName;
+
   ChatScreen({
     required this.receiverId,
+    required this.receiverName,
   });
 
   @override
@@ -222,21 +225,27 @@ class _ChatScreenState
 
                 CircleAvatar(
 
-                  radius: 24,
+  radius: 24,
 
-                  backgroundColor:
-                      Colors.white,
+  backgroundColor:
+      Colors.white,
 
-                  child: Icon(
+  child: Text(
 
-                    Icons.person,
+    widget.receiverName
+        .substring(0, 1)
+        .toUpperCase(),
 
-                    color:
-                        Color(0xFF3E6F55),
+    style: TextStyle(
 
-                    size: 30,
-                  ),
-                ),
+      color: Color(0xFF3E6F55),
+
+      fontWeight: FontWeight.bold,
+
+      fontSize: 22,
+    ),
+  ),
+),
 
                 SizedBox(width: 15),
 
@@ -249,7 +258,7 @@ class _ChatScreenState
 
                     Text(
 
-                      "Discussion",
+                      widget.receiverName,
 
                       style: TextStyle(
 
@@ -416,23 +425,83 @@ class _ChatScreenState
                       ],
                     ),
 
-                    child: Text(
+                    child: Column(
 
-                      msg['content'],
+  crossAxisAlignment:
+      CrossAxisAlignment.start,
 
-                      style: TextStyle(
+  children: [
 
-                        color:
+    Text(
 
-                            isMe
+      msg['content'],
 
-                                ? Colors.white
+      style: TextStyle(
 
-                                : Colors.black87,
+        color:
 
-                        fontSize: 15,
-                      ),
-                    ),
+            isMe
+
+                ? Colors.white
+
+                : Colors.black87,
+
+        fontSize: 15,
+      ),
+    ),
+
+    SizedBox(height: 5),
+
+    if (isMe)
+
+      Row(
+
+        mainAxisAlignment:
+            MainAxisAlignment.end,
+
+        children: [
+
+          Icon(
+
+            msg['is_read']
+
+                ? Icons.done_all
+
+                : Icons.done,
+
+            size: 18,
+
+            color:
+
+                msg['is_read']
+
+                    ? Colors.lightBlueAccent
+
+                    : Colors.white70,
+          ),
+
+          SizedBox(width: 4),
+
+          Text(
+
+            msg['is_read']
+
+                ? "Vu"
+
+                : "Envoyé",
+
+            style: TextStyle(
+
+              color:
+                  Colors.white70,
+
+              fontSize: 11,
+            ),
+          ),
+        ],
+      ),
+  ],
+),
                   ),
                 );
               },

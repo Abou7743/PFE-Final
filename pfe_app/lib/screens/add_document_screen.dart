@@ -15,6 +15,10 @@ class AddDocumentScreen extends StatefulWidget {
 class _AddDocumentScreenState
     extends State<AddDocumentScreen> {
 
+  // =========================
+  // CONTROLLERS
+  // =========================
+
   TextEditingController nomController =
       TextEditingController();
 
@@ -33,6 +37,10 @@ class _AddDocumentScreenState
   TextEditingController lieuController =
       TextEditingController();
 
+  // =========================
+  // VARIABLES
+  // =========================
+
   String typeDocument =
       "Carte identité";
 
@@ -43,7 +51,7 @@ class _AddDocumentScreenState
   double longitude = 0;
 
   // =========================
-  // 📍 LOCALISATION
+  // LOCALISATION
   // =========================
 
   Future getLocation() async {
@@ -62,7 +70,7 @@ class _AddDocumentScreenState
   }
 
   // =========================
-  // 🖼️ CHOISIR IMAGE
+  // IMAGE
   // =========================
 
   Future pickImage() async {
@@ -83,7 +91,7 @@ class _AddDocumentScreenState
   }
 
   // =========================
-  // 🚀 PUBLIER DOCUMENT
+  // PUBLIER
   // =========================
 
   Future publishDocument() async {
@@ -137,7 +145,7 @@ class _AddDocumentScreenState
         longitude.toString();
 
     // =========================
-    // 🖼️ IMAGE
+    // IMAGE
     // =========================
 
     if (image != null) {
@@ -167,16 +175,8 @@ class _AddDocumentScreenState
     var response =
         await request.send();
 
-    print(response.statusCode);
-
-    final body =
-        await response.stream
-            .bytesToString();
-
-    print(body);
-
     // =========================
-    // ✅ SUCCÈS
+    // SUCCES
     // =========================
 
     if (response.statusCode == 201) {
@@ -186,8 +186,11 @@ class _AddDocumentScreenState
 
         SnackBar(
 
+          backgroundColor:
+              Colors.green,
+
           content: Text(
-            "Document publié ✅",
+            "Document publié avec succès ✅",
           ),
         ),
       );
@@ -204,6 +207,9 @@ class _AddDocumentScreenState
 
         SnackBar(
 
+          backgroundColor:
+              Colors.red,
+
           content: Text(
             "Erreur publication ❌",
           ),
@@ -213,7 +219,7 @@ class _AddDocumentScreenState
   }
 
   // =========================
-  // ✏️ CHAMP
+  // CHAMP
   // =========================
 
   Widget field(
@@ -222,12 +228,14 @@ class _AddDocumentScreenState
 
     String hint,
 
+    IconData icon,
+
   ) {
 
     return Padding(
 
       padding: EdgeInsets.only(
-        bottom: 12,
+        bottom: 16,
       ),
 
       child: TextField(
@@ -238,17 +246,51 @@ class _AddDocumentScreenState
 
           hintText: hint,
 
+          prefixIcon: Icon(
+            icon,
+            color: Color(0xFF3E6F55),
+          ),
+
           filled: true,
 
-          fillColor: Colors.white,
+          fillColor:
+              Color(0xFFFAFAFA),
 
-          border: OutlineInputBorder(
+          contentPadding:
+              EdgeInsets.symmetric(
+            vertical: 18,
+          ),
+
+          enabledBorder:
+              OutlineInputBorder(
 
             borderRadius:
-                BorderRadius.circular(15),
+                BorderRadius.circular(
+              18,
+            ),
 
-            borderSide:
-                BorderSide.none,
+            borderSide: BorderSide(
+
+              color:
+                  Colors.grey.shade300,
+            ),
+          ),
+
+          focusedBorder:
+              OutlineInputBorder(
+
+            borderRadius:
+                BorderRadius.circular(
+              18,
+            ),
+
+            borderSide: BorderSide(
+
+              color:
+                  Color(0xFF3E6F55),
+
+              width: 2,
+            ),
           ),
         ),
       ),
@@ -265,20 +307,49 @@ class _AddDocumentScreenState
     return Scaffold(
 
       backgroundColor:
-          Color(0xFFF5F5F5),
+          Color(0xFFF4F7F5),
 
       appBar: AppBar(
 
-        title: Text(
-          "Publier Document 🪪",
-        ),
+        elevation: 0,
 
         centerTitle: true,
 
-        elevation: 0,
-
         backgroundColor:
             Color(0xFF3E6F55),
+
+        title: Column(
+
+          children: [
+
+            Text(
+
+              "Publier Document",
+
+              style: TextStyle(
+
+                fontWeight:
+                    FontWeight.bold,
+
+                fontSize: 20,
+              ),
+            ),
+
+            SizedBox(height: 2),
+
+            Text(
+
+              "Ajoutez un document trouvé",
+
+              style: TextStyle(
+
+                fontSize: 11,
+
+                color: Colors.white70,
+              ),
+            ),
+          ],
+        ),
       ),
 
       body: SingleChildScrollView(
@@ -290,7 +361,7 @@ class _AddDocumentScreenState
           children: [
 
             // =========================
-            // IMAGE
+            // IMAGE CARD
             // =========================
 
             GestureDetector(
@@ -299,16 +370,26 @@ class _AddDocumentScreenState
 
               child: Container(
 
-                height: 200,
+                height: 220,
 
                 width: double.infinity,
 
                 decoration: BoxDecoration(
 
-                  color: Colors.white,
+                  gradient: LinearGradient(
+
+                    colors: [
+
+                      Colors.white,
+
+                      Color(0xFFF1F5F2),
+                    ],
+                  ),
 
                   borderRadius:
-                      BorderRadius.circular(20),
+                      BorderRadius.circular(
+                    25,
+                  ),
 
                   boxShadow: [
 
@@ -317,9 +398,9 @@ class _AddDocumentScreenState
                       color:
                           Colors.black12,
 
-                      blurRadius: 10,
+                      blurRadius: 15,
 
-                      offset: Offset(0, 4),
+                      offset: Offset(0, 5),
                     ),
                   ],
                 ),
@@ -333,17 +414,35 @@ class _AddDocumentScreenState
 
                         children: [
 
-                          Icon(
+                          Container(
 
-                            Icons.camera_alt,
+                            padding:
+                                EdgeInsets.all(
+                              18,
+                            ),
 
-                            size: 60,
+                            decoration:
+                                BoxDecoration(
 
-                            color:
-                                Color(0xFF3E6F55),
+                              color:
+                                  Color(0xFFE8F1EC),
+
+                              shape:
+                                  BoxShape.circle,
+                            ),
+
+                            child: Icon(
+
+                              Icons.add_a_photo_rounded,
+
+                              size: 70,
+
+                              color:
+                                  Color(0xFF3E6F55),
+                            ),
                           ),
 
-                          SizedBox(height: 10),
+                          SizedBox(height: 18),
 
                           Text(
 
@@ -351,10 +450,25 @@ class _AddDocumentScreenState
 
                             style: TextStyle(
 
-                              fontSize: 16,
+                              fontSize: 17,
 
                               fontWeight:
-                                  FontWeight.w500,
+                                  FontWeight.bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 5),
+
+                          Text(
+
+                            "Carte • Passeport • Permis",
+
+                            style: TextStyle(
+
+                              color:
+                                  Colors.grey,
+
+                              fontSize: 13,
                             ),
                           ),
                         ],
@@ -363,7 +477,9 @@ class _AddDocumentScreenState
                     : ClipRRect(
 
                         borderRadius:
-                            BorderRadius.circular(20),
+                            BorderRadius.circular(
+                          25,
+                        ),
 
                         child: FutureBuilder(
 
@@ -394,7 +510,7 @@ class _AddDocumentScreenState
               ),
             ),
 
-            SizedBox(height: 25),
+            SizedBox(height: 30),
 
             // =========================
             // TYPE DOCUMENT
@@ -406,17 +522,49 @@ class _AddDocumentScreenState
 
               decoration: InputDecoration(
 
+                prefixIcon: Icon(
+
+                  Icons.badge,
+
+                  color:
+                      Color(0xFF3E6F55),
+                ),
+
                 filled: true,
 
-                fillColor: Colors.white,
+                fillColor:
+                    Color(0xFFFAFAFA),
 
-                border: OutlineInputBorder(
+                enabledBorder:
+                    OutlineInputBorder(
 
                   borderRadius:
-                      BorderRadius.circular(15),
+                      BorderRadius.circular(
+                    18,
+                  ),
 
-                  borderSide:
-                      BorderSide.none,
+                  borderSide: BorderSide(
+
+                    color:
+                        Colors.grey.shade300,
+                  ),
+                ),
+
+                focusedBorder:
+                    OutlineInputBorder(
+
+                  borderRadius:
+                      BorderRadius.circular(
+                    18,
+                  ),
+
+                  borderSide: BorderSide(
+
+                    color:
+                        Color(0xFF3E6F55),
+
+                    width: 2,
+                  ),
                 ),
               ),
 
@@ -451,34 +599,44 @@ class _AddDocumentScreenState
 
             SizedBox(height: 20),
 
+            // =========================
+            // CHAMPS
+            // =========================
+
             field(
               nomController,
               "Nom",
+              Icons.person,
             ),
 
             field(
               prenomController,
               "Prénom",
+              Icons.person_outline,
             ),
 
             field(
               nniController,
               "NNI",
+              Icons.credit_card,
             ),
 
             field(
               dateController,
               "Date naissance",
+              Icons.calendar_month,
             ),
 
             field(
               telController,
               "Téléphone",
+              Icons.phone,
             ),
 
             field(
               lieuController,
               "Lieu trouvé",
+              Icons.location_on,
             ),
 
             SizedBox(height: 25),
@@ -499,36 +657,63 @@ class _AddDocumentScreenState
                 style:
                     ElevatedButton.styleFrom(
 
+                  elevation: 8,
+
+                  shadowColor:
+                      Colors.black38,
+
                   backgroundColor:
                       Color(0xFF3E6F55),
 
                   padding:
                       EdgeInsets.symmetric(
-                    vertical: 16,
+                    vertical: 18,
                   ),
 
                   shape:
                       RoundedRectangleBorder(
 
                     borderRadius:
-                        BorderRadius.circular(15),
+                        BorderRadius.circular(
+                      18,
+                    ),
                   ),
                 ),
 
-                child: Text(
+                child: Row(
 
-                  "Publier",
+                  mainAxisAlignment:
+                      MainAxisAlignment.center,
 
-                  style: TextStyle(
+                  children: [
 
-                    fontSize: 18,
+                    Icon(
+                      Icons.cloud_upload,
+                      color: Colors.white,
+                    ),
 
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
+                    SizedBox(width: 10),
+
+                    Text(
+
+                      "Publier le document",
+
+                      style: TextStyle(
+
+                        fontSize: 18,
+
+                        color: Colors.white,
+
+                        fontWeight:
+                            FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+
+            SizedBox(height: 30),
           ],
         ),
       ),

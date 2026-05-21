@@ -5,37 +5,58 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart'
     as http;
 
-import 'reset_password_screen.dart';
-
-class ForgotPasswordScreen
+class ResetPasswordScreen
     extends StatefulWidget {
 
   @override
-  State<ForgotPasswordScreen>
+  State<ResetPasswordScreen>
       createState() =>
-          _ForgotPasswordScreenState();
+          _ResetPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState
-    extends State<ForgotPasswordScreen> {
+class _ResetPasswordScreenState
+    extends State<ResetPasswordScreen> {
 
   final TextEditingController
-      emailController =
+      otpController =
       TextEditingController();
 
   final TextEditingController
-      phoneController =
+      passwordController =
       TextEditingController();
 
-  String method = "email";
+  final TextEditingController
+      confirmController =
+      TextEditingController();
 
   bool loading = false;
 
   // =========================
-  // SEND OTP
+  // RESET PASSWORD
   // =========================
 
-  Future sendOtp() async {
+  Future resetPassword() async {
+
+    if (passwordController.text !=
+        confirmController.text) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+
+        SnackBar(
+
+          backgroundColor:
+              Colors.red,
+
+          content: Text(
+
+            "Les mots de passe ne correspondent pas ❌",
+          ),
+        ),
+      );
+
+      return;
+    }
 
     setState(() {
       loading = true;
@@ -45,18 +66,16 @@ class _ForgotPasswordScreenState
         await http.post(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/send-otp/",
+        "http://127.0.0.1:8000/api/reset-password/",
       ),
 
       body: {
 
-        "method": method,
+        "otp":
+            otpController.text,
 
-        "email":
-            emailController.text,
-
-        "telephone":
-            phoneController.text,
+        "password":
+            passwordController.text,
       },
     );
 
@@ -80,15 +99,11 @@ class _ForgotPasswordScreenState
 
     if (data['success']) {
 
-      Navigator.push(
+      Navigator.popUntil(
 
         context,
 
-        MaterialPageRoute(
-
-          builder: (_) =>
-              ResetPasswordScreen(),
-        ),
+        (route) => route.isFirst,
       );
     }
   }
@@ -168,7 +183,7 @@ class _ForgotPasswordScreenState
 
                     Text(
 
-                      "Mot de passe oublié",
+                      "Changer mot de passe",
 
                       style: TextStyle(
 
@@ -184,14 +199,10 @@ class _ForgotPasswordScreenState
 
                     SizedBox(height: 30),
 
-                    DropdownButtonFormField(
+                    TextField(
 
-                      value: method,
-
-                      dropdownColor:
-                          Color(
-                        0xFF2E5A44,
-                      ),
+                      controller:
+                          otpController,
 
                       style: TextStyle(
                         color:
@@ -199,81 +210,55 @@ class _ForgotPasswordScreenState
                       ),
 
                       decoration:
-                          inputDecoration(),
-
-                      items: [
-
-                        DropdownMenuItem(
-
-                          value:
-                              "email",
-
-                          child: Text(
-                            "Email",
-                          ),
-                        ),
-
-                        DropdownMenuItem(
-
-                          value:
-                              "telephone",
-
-                          child: Text(
-                            "Téléphone",
-                          ),
-                        ),
-                      ],
-
-                      onChanged: (value) {
-
-                        setState(() {
-
-                          method = value!;
-                        });
-                      },
+                          inputDecoration(
+                        hint:
+                            "Code OTP",
+                      ),
                     ),
 
                     SizedBox(height: 20),
 
-                    if (method ==
-                        "email")
+                    TextField(
 
-                      TextField(
+                      controller:
+                          passwordController,
 
-                        controller:
-                            emailController,
+                      obscureText:
+                          true,
 
-                        style: TextStyle(
-                          color:
-                              Colors.white,
-                        ),
-
-                        decoration:
-                            inputDecoration(
-                          hint:
-                              "Votre email",
-                        ),
+                      style: TextStyle(
+                        color:
+                            Colors.white,
                       ),
 
-                    if (method ==
-                        "telephone")
-
-                      TextField(
-
-                        controller:
-                            phoneController,
-
-                        style: TextStyle(
-                          color:
-                              Colors.white,
-                        ),
-
-                        decoration:
-                            inputDecoration(
-                          hint:
-                              "Votre téléphone",
-                        ),
+                      decoration:
+                          inputDecoration(
+                        hint:
+                            "Nouveau mot de passe",
                       ),
+                    ),
+
+                    SizedBox(height: 20),
+
+                    TextField(
+
+                      controller:
+                          confirmController,
+
+                      obscureText:
+                          true,
+
+                      style: TextStyle(
+                        color:
+                            Colors.white,
+                      ),
+
+                      decoration:
+                          inputDecoration(
+                        hint:
+                            "Confirmer mot de passe",
+                      ),
+                    ),
 
                     SizedBox(height: 30),
 
@@ -291,7 +276,7 @@ class _ForgotPasswordScreenState
 
                             loading
                                 ? null
-                                : sendOtp,
+                                : resetPassword,
 
                         style:
                             ElevatedButton.styleFrom(
@@ -322,7 +307,7 @@ class _ForgotPasswordScreenState
 
                                 : Text(
 
-                                    "Continuer",
+                                    "Changer mot de passe",
 
                                     style: TextStyle(
 

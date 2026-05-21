@@ -460,6 +460,8 @@ class _DetailScreenState
 
                                 receiverId:
                                     widget.objet.user,
+                                receiverName:
+                                    widget.objet.titre
                               ),
                             ),
                           );

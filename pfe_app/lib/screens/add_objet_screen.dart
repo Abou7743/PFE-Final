@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart'
+    as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddObjetScreen extends StatefulWidget {
+class AddObjetScreen
+    extends StatefulWidget {
 
   @override
   _AddObjetScreenState createState() =>
@@ -41,9 +43,21 @@ class _AddObjetScreenState
   final telephoneController =
       TextEditingController();
 
-  // 🔥 AUTRE OBJET
   final autreController =
       TextEditingController();
+
+  // =========================
+  // INIT
+  // =========================
+
+  @override
+  void initState() {
+
+    super.initState();
+
+    titreController.text =
+        "Sac trouvé";
+  }
 
   // =========================
   // LOCALISATION
@@ -63,7 +77,7 @@ class _AddObjetScreenState
   }
 
   // =========================
-  // PUBLIER OBJET
+  // SUBMIT
   // =========================
 
   Future submit() async {
@@ -88,7 +102,8 @@ class _AddObjetScreenState
     // TITRE
     // =========================
 
-    if (selectedCategory == "Autre") {
+    if (selectedCategory ==
+        "Autre") {
 
       request.fields['titre'] =
           autreController.text;
@@ -117,21 +132,24 @@ class _AddObjetScreenState
     // CATEGORIE
     // =========================
 
-    if (selectedCategory == "Téléphone") {
+    if (selectedCategory ==
+        "Téléphone") {
 
       request.fields['categorie'] =
           "telephone";
 
     }
 
-    else if (selectedCategory == "Sac") {
+    else if (selectedCategory ==
+        "Sac") {
 
       request.fields['categorie'] =
           "sac";
 
     }
 
-    else if (selectedCategory == "Clé") {
+    else if (selectedCategory ==
+        "Clé") {
 
       request.fields['categorie'] =
           "cle";
@@ -201,15 +219,19 @@ class _AddObjetScreenState
     // SUCCES
     // =========================
 
-    if (response.statusCode == 201) {
+    if (response.statusCode ==
+        201) {
 
       ScaffoldMessenger.of(context)
           .showSnackBar(
 
         SnackBar(
 
+          backgroundColor:
+              Colors.green,
+
           content: Text(
-            "Objet ajouté avec succès 🔥",
+            "Objet publié avec succès ✅",
           ),
         ),
       );
@@ -226,12 +248,99 @@ class _AddObjetScreenState
 
         SnackBar(
 
+          backgroundColor:
+              Colors.red,
+
           content: Text(
             "Erreur ❌ ${response.statusCode}",
           ),
         ),
       );
     }
+  }
+
+  // =========================
+  // FIELD
+  // =========================
+
+  Widget field({
+
+    required TextEditingController
+        controller,
+
+    required String hint,
+
+    required IconData icon,
+
+    bool readOnly = false,
+
+    int maxLines = 1,
+
+  }) {
+
+    return TextField(
+
+      controller: controller,
+
+      readOnly: readOnly,
+
+      maxLines: maxLines,
+
+      decoration: InputDecoration(
+
+        hintText: hint,
+
+        prefixIcon: Icon(
+
+          icon,
+
+          color:
+              Color(0xFF3E6F55),
+        ),
+
+        filled: true,
+
+        fillColor:
+            Color(0xFFFAFAFA),
+
+        contentPadding:
+            EdgeInsets.symmetric(
+          vertical: 18,
+        ),
+
+        enabledBorder:
+            OutlineInputBorder(
+
+          borderRadius:
+              BorderRadius.circular(
+            18,
+          ),
+
+          borderSide: BorderSide(
+
+            color:
+                Colors.grey.shade300,
+          ),
+        ),
+
+        focusedBorder:
+            OutlineInputBorder(
+
+          borderRadius:
+              BorderRadius.circular(
+            18,
+          ),
+
+          borderSide: BorderSide(
+
+            color:
+                Color(0xFF3E6F55),
+
+            width: 2,
+          ),
+        ),
+      ),
+    );
   }
 
   // =========================
@@ -244,512 +353,614 @@ class _AddObjetScreenState
     return Scaffold(
 
       backgroundColor:
-          Color(0xFFF5F5F5),
+          Color(0xFFF4F7F5),
 
       body: SafeArea(
 
-        child: Padding(
+        child:
+            SingleChildScrollView(
 
-          padding: EdgeInsets.all(20),
+          padding:
+              EdgeInsets.all(20),
 
-          child: SingleChildScrollView(
+          child: Column(
 
-            child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.start,
 
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
+            children: [
 
-              children: [
+              // =========================
+              // HEADER
+              // =========================
 
-                // =========================
-                // HEADER
-                // =========================
+              Row(
 
-                Row(
+                children: [
 
-                  children: [
+                  Container(
 
-                    IconButton(
+                    decoration:
+                        BoxDecoration(
+
+                      color:
+                          Colors.white,
+
+                      borderRadius:
+                          BorderRadius.circular(
+                        14,
+                      ),
+
+                      boxShadow: [
+
+                        BoxShadow(
+
+                          color:
+                              Colors.black12,
+
+                          blurRadius: 6,
+                        ),
+                      ],
+                    ),
+
+                    child: IconButton(
 
                       icon: Icon(
                         Icons.arrow_back,
                       ),
 
-                      onPressed: () =>
-                          Navigator.pop(
-                        context,
+                      onPressed: () {
+
+                        Navigator.pop(
+                          context,
+                        );
+                      },
+                    ),
+                  ),
+
+                  SizedBox(width: 15),
+
+                  Expanded(
+
+                    child: Column(
+
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+
+                      children: [
+
+                        Text(
+
+                          "Publier Objet",
+
+                          style: TextStyle(
+
+                            fontSize: 24,
+
+                            fontWeight:
+                                FontWeight.bold,
+                          ),
+                        ),
+
+                        SizedBox(height: 3),
+
+                        Text(
+
+                          "Ajoutez un objet trouvé",
+
+                          style: TextStyle(
+
+                            color:
+                                Colors.grey,
+
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 30),
+
+              // =========================
+              // HEADER CARD
+              // =========================
+
+              Container(
+
+                padding:
+                    EdgeInsets.all(22),
+
+                decoration:
+                    BoxDecoration(
+
+                  gradient:
+                      LinearGradient(
+
+                    colors: [
+
+                      Colors.white,
+
+                      Color(
+                        0xFFF1F5F2,
+                      ),
+                    ],
+                  ),
+
+                  borderRadius:
+                      BorderRadius.circular(
+                    25,
+                  ),
+
+                  boxShadow: [
+
+                    BoxShadow(
+
+                      color:
+                          Colors.black12,
+
+                      blurRadius: 12,
+
+                      offset:
+                          Offset(0, 4),
+                    ),
+                  ],
+                ),
+
+                child: Column(
+
+                  children: [
+
+                    Container(
+
+                      padding:
+                          EdgeInsets.all(
+                        18,
+                      ),
+
+                      decoration:
+                          BoxDecoration(
+
+                        color:
+                            Color(
+                          0xFFE8F1EC,
+                        ),
+
+                        shape:
+                            BoxShape.circle,
+                      ),
+
+                      child: Icon(
+
+                        Icons.inventory_2,
+
+                        size: 65,
+
+                        color:
+                            Color(
+                          0xFF3E6F55,
+                        ),
                       ),
                     ),
 
-                    SizedBox(width: 10),
+                    SizedBox(height: 15),
 
                     Text(
 
-                      "Publier un objet",
+                      "Publication rapide",
 
                       style: TextStyle(
 
-                        fontSize: 22,
+                        fontSize: 19,
 
                         fontWeight:
                             FontWeight.bold,
                       ),
-                    )
-                  ],
-                ),
-
-                SizedBox(height: 25),
-
-                // =========================
-                // TITRE
-                // =========================
-
-                if (selectedCategory !=
-                    "Autre")
-
-                  Column(
-
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-
-                    children: [
-
-                      Text(
-
-                        "TITRE",
-
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
-
-                      SizedBox(height: 8),
-
-                      TextField(
-
-                        controller:
-                            titreController,
-
-                        decoration:
-                            InputDecoration(
-
-                          hintText:
-                              "Sac trouvé",
-
-                          filled: true,
-
-                          fillColor:
-                              Colors.white,
-
-                          border:
-                              OutlineInputBorder(
-
-                            borderRadius:
-                                BorderRadius.circular(
-                              15,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                SizedBox(height: 20),
-
-                // =========================
-                // CATEGORIE
-                // =========================
-
-                Text(
-
-                  "CATÉGORIE",
-
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                Wrap(
-
-                  spacing: 10,
-
-                  runSpacing: 10,
-
-                  children: [
-
-                    categoryChip(
-                        "Téléphone"),
-
-                    categoryChip(
-                        "Sac"),
-
-                    categoryChip(
-                        "Clé"),
-
-                    categoryChip(
-                        "Portefeuille"),
-
-                    categoryChip(
-                        "Montre"),
-
-                    categoryChip(
-                        "Autre"),
-                  ],
-                ),
-
-                // =========================
-                // AUTRE OBJET
-                // =========================
-
-                if (selectedCategory ==
-                    "Autre")
-
-                  Column(
-
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-
-                    children: [
-
-                      SizedBox(height: 20),
-
-                      Text(
-
-                        "PRÉCISEZ L'OBJET",
-
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
-
-                      SizedBox(height: 8),
-
-                      TextField(
-
-                        controller:
-                            autreController,
-
-                        decoration:
-                            InputDecoration(
-
-                          hintText:
-                              "Ex: Lunettes",
-
-                          filled: true,
-
-                          fillColor:
-                              Colors.white,
-
-                          border:
-                              OutlineInputBorder(
-
-                            borderRadius:
-                                BorderRadius.circular(
-                              15,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                SizedBox(height: 20),
-
-                // =========================
-                // LIEU
-                // =========================
-
-                Text(
-
-                  "LIEU",
-
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 8),
-
-                Row(
-
-                  children: [
-
-                    Expanded(
-
-                      child: TextField(
-
-                        controller:
-                            lieuController,
-
-                        decoration:
-                            InputDecoration(
-
-                          hintText:
-                              "📍 Nouakchott",
-
-                          filled: true,
-
-                          fillColor:
-                              Colors.white,
-
-                          border:
-                              OutlineInputBorder(
-
-                            borderRadius:
-                                BorderRadius.circular(
-                              15,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
 
-                    SizedBox(width: 10),
+                    SizedBox(height: 5),
 
-                    CircleAvatar(
+                    Text(
 
-                      backgroundColor:
-                          Color(0xFF3E6F55),
+                      "Choisissez la catégorie puis remplissez les informations",
 
-                      child: IconButton(
-
-                        icon: Icon(
-                          Icons.my_location,
-                          color: Colors.white,
-                        ),
-
-                        onPressed:
-                            getLocation,
-                      ),
-                    )
-                  ],
-                ),
-
-                SizedBox(height: 20),
-
-                // =========================
-                // DESCRIPTION
-                // =========================
-
-                Text(
-
-                  "DESCRIPTION",
-
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 8),
-
-                TextField(
-
-                  controller:
-                      descriptionController,
-
-                  maxLines: 4,
-
-                  decoration:
-                      InputDecoration(
-
-                    hintText:
-                        "Décrire l'objet...",
-
-                    filled: true,
-
-                    fillColor:
-                        Colors.white,
-
-                    border:
-                        OutlineInputBorder(
-
-                      borderRadius:
-                          BorderRadius.circular(
-                        15,
-                      ),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                // =========================
-                // TELEPHONE
-                // =========================
-
-                Text(
-
-                  "TÉLÉPHONE",
-
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 8),
-
-                TextField(
-
-                  controller:
-                      telephoneController,
-
-                  keyboardType:
-                      TextInputType.phone,
-
-                  decoration:
-                      InputDecoration(
-
-                    hintText:
-                        "22200000000",
-
-                    filled: true,
-
-                    fillColor:
-                        Colors.white,
-
-                    border:
-                        OutlineInputBorder(
-
-                      borderRadius:
-                          BorderRadius.circular(
-                        15,
-                      ),
-                    ),
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                // =========================
-                // STATUT
-                // =========================
-
-                Text(
-
-                  "STATUT",
-
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight:
-                        FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 10),
-
-                Row(
-
-                  children: [
-
-                    ChoiceChip(
-
-                      label: Text(
-                        "Trouvé",
-                      ),
-
-                      selected:
-                          selectedStatut ==
-                              "trouvé",
-
-                      onSelected: (_) {
-
-                        setState(() {
-
-                          selectedStatut =
-                              "trouvé";
-                        });
-                      },
-                    ),
-
-                    SizedBox(width: 10),
-
-                    ChoiceChip(
-
-                      label: Text(
-                        "Perdu",
-                      ),
-
-                      selected:
-                          selectedStatut ==
-                              "perdu",
-
-                      onSelected: (_) {
-
-                        setState(() {
-
-                          selectedStatut =
-                              "perdu";
-                        });
-                      },
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 30),
-
-                // =========================
-                // PUBLIER
-                // =========================
-
-                SizedBox(
-
-                  width: double.infinity,
-
-                  child: ElevatedButton(
-
-                    onPressed: submit,
-
-                    style:
-                        ElevatedButton.styleFrom(
-
-                      backgroundColor:
-                          Color(0xFF3E6F55),
-
-                      padding:
-                          EdgeInsets.symmetric(
-                        vertical: 16,
-                      ),
-
-                      shape:
-                          RoundedRectangleBorder(
-
-                        borderRadius:
-                            BorderRadius.circular(
-                          15,
-                        ),
-                      ),
-                    ),
-
-                    child: Text(
-
-                      "Publier",
+                      textAlign:
+                          TextAlign.center,
 
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight:
-                            FontWeight.bold,
+
+                        color:
+                            Colors.grey,
+
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 30),
+
+              // =========================
+              // TITRE
+              // =========================
+
+              if (selectedCategory !=
+                  "Autre")
+
+                Column(
+
+                  crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+
+                  children: [
+
+                    sectionTitle(
+                      "TITRE",
+                    ),
+
+                    SizedBox(height: 10),
+
+                    field(
+
+                      controller:
+                          titreController,
+
+                      hint:
+                          "Sac trouvé",
+
+                      icon:
+                          Icons.title,
+
+                      readOnly: true,
+                    ),
+                  ],
+                ),
+
+              SizedBox(height: 25),
+
+              // =========================
+              // CATEGORIE
+              // =========================
+
+              sectionTitle(
+                "CATÉGORIE",
+              ),
+
+              SizedBox(height: 12),
+
+              Wrap(
+
+                spacing: 10,
+
+                runSpacing: 12,
+
+                children: [
+
+                  categoryChip(
+                    "Téléphone",
+                    Icons.phone_android,
+                  ),
+
+                  categoryChip(
+                    "Sac",
+                    Icons.work,
+                  ),
+
+                  categoryChip(
+                    "Clé",
+                    Icons.key,
+                  ),
+
+                  categoryChip(
+                    "Portefeuille",
+                    Icons.wallet,
+                  ),
+
+                  categoryChip(
+                    "Montre",
+                    Icons.watch,
+                  ),
+
+                  categoryChip(
+                    "Autre",
+                    Icons.inventory_2,
+                  ),
+                ],
+              ),
+
+              // =========================
+              // AUTRE OBJET
+              // =========================
+
+              if (selectedCategory ==
+                  "Autre")
+
+                Column(
+
+                  crossAxisAlignment:
+                      CrossAxisAlignment
+                          .start,
+
+                  children: [
+
+                    SizedBox(height: 25),
+
+                    sectionTitle(
+                      "PRÉCISEZ L'OBJET",
+                    ),
+
+                    SizedBox(height: 10),
+
+                    field(
+
+                      controller:
+                          autreController,
+
+                      hint:
+                          "Ex: Lunettes",
+
+                      icon:
+                          Icons.edit,
+                    ),
+                  ],
+                ),
+
+              SizedBox(height: 25),
+
+              // =========================
+              // LIEU
+              // =========================
+
+              sectionTitle(
+                "LIEU",
+              ),
+
+              SizedBox(height: 10),
+
+              Row(
+
+                children: [
+
+                  Expanded(
+
+                    child: field(
+
+                      controller:
+                          lieuController,
+
+                      hint:
+                          "📍 Nouakchott",
+
+                      icon:
+                          Icons.location_on,
+                    ),
+                  ),
+
+                  SizedBox(width: 12),
+
+                  Container(
+
+                    decoration:
+                        BoxDecoration(
+
+                      color:
+                          Color(
+                        0xFF3E6F55,
+                      ),
+
+                      borderRadius:
+                          BorderRadius.circular(
+                        16,
+                      ),
+                    ),
+
+                    child: IconButton(
+
+                      icon: Icon(
+
+                        Icons.my_location,
+
+                        color:
+                            Colors.white,
+                      ),
+
+                      onPressed:
+                          getLocation,
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 25),
+
+              // =========================
+              // DESCRIPTION
+              // =========================
+
+              sectionTitle(
+                "DESCRIPTION",
+              ),
+
+              SizedBox(height: 10),
+
+              field(
+
+                controller:
+                    descriptionController,
+
+                hint:
+                    "Décrire l'objet...",
+
+                icon:
+                    Icons.description,
+
+                maxLines: 4,
+              ),
+
+              SizedBox(height: 25),
+
+              // =========================
+              // TELEPHONE
+              // =========================
+
+              sectionTitle(
+                "TÉLÉPHONE",
+              ),
+
+              SizedBox(height: 10),
+
+              field(
+
+                controller:
+                    telephoneController,
+
+                hint:
+                    "22200000000",
+
+                icon:
+                    Icons.phone,
+              ),
+
+              SizedBox(height: 25),
+
+              // =========================
+              // STATUT
+              // =========================
+
+              sectionTitle(
+                "STATUT",
+              ),
+
+              SizedBox(height: 12),
+
+              Row(
+
+                children: [
+
+                  statutChip(
+                    "trouvé",
+                    "Trouvé",
+                    Colors.green,
+                  ),
+
+                  SizedBox(width: 12),
+
+                  statutChip(
+                    "perdu",
+                    "Perdu",
+                    Colors.red,
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 35),
+
+              // =========================
+              // BUTTON
+              // =========================
+
+              SizedBox(
+
+                width: double.infinity,
+
+                child: ElevatedButton(
+
+                  onPressed: submit,
+
+                  style:
+                      ElevatedButton.styleFrom(
+
+                    elevation: 8,
+
+                    shadowColor:
+                        Colors.black38,
+
+                    backgroundColor:
+                        Color(0xFF3E6F55),
+
+                    padding:
+                        EdgeInsets.symmetric(
+                      vertical: 18,
+                    ),
+
+                    shape:
+                        RoundedRectangleBorder(
+
+                      borderRadius:
+                          BorderRadius.circular(
+                        18,
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
+
+                  child: Row(
+
+                    mainAxisAlignment:
+                        MainAxisAlignment.center,
+
+                    children: [
+
+                      Icon(
+
+                        Icons.cloud_upload,
+
+                        color:
+                            Colors.white,
+                      ),
+
+                      SizedBox(width: 10),
+
+                      Text(
+
+                        "Publier Objet",
+
+                        style: TextStyle(
+
+                          fontSize: 18,
+
+                          color:
+                              Colors.white,
+
+                          fontWeight:
+                              FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 30),
+            ],
           ),
         ),
+      ),
+    );
+  }
+
+  // =========================
+  // SECTION TITLE
+  // =========================
+
+  Widget sectionTitle(
+      String text) {
+
+    return Text(
+
+      text,
+
+      style: TextStyle(
+
+        color: Colors.grey,
+
+        fontWeight:
+            FontWeight.bold,
+
+        fontSize: 13,
       ),
     );
   }
@@ -759,7 +970,11 @@ class _AddObjetScreenState
   // =========================
 
   Widget categoryChip(
+
     String text,
+
+    IconData icon,
+
   ) {
 
     bool isSelected =
@@ -772,6 +987,17 @@ class _AddObjetScreenState
         setState(() {
 
           selectedCategory = text;
+
+          if (text != "Autre") {
+
+            titreController.text =
+                "$text trouvé";
+          }
+
+          else {
+
+            titreController.clear();
+          }
         });
       },
 
@@ -780,36 +1006,186 @@ class _AddObjetScreenState
         padding:
             EdgeInsets.symmetric(
 
-          horizontal: 15,
+          horizontal: 16,
 
-          vertical: 10,
+          vertical: 12,
         ),
 
-        decoration: BoxDecoration(
+        decoration:
+            BoxDecoration(
 
           color: isSelected
-              ? Color(0xFF3E6F55)
-              : Colors.grey[200],
+
+              ? Color(
+                  0xFF3E6F55,
+                )
+
+              : Colors.white,
 
           borderRadius:
               BorderRadius.circular(
-            20,
+            18,
           ),
+
+          boxShadow: [
+
+            BoxShadow(
+
+              color:
+                  Colors.black12,
+
+              blurRadius: 6,
+            ),
+          ],
         ),
 
-        child: Text(
+        child: Row(
 
-          text,
+          mainAxisSize:
+              MainAxisSize.min,
 
-          style: TextStyle(
+          children: [
 
-            fontWeight:
-                FontWeight.bold,
+            Icon(
 
-            color: isSelected
-                ? Colors.white
-                : Colors.black,
+              icon,
+
+              size: 18,
+
+              color: isSelected
+
+                  ? Colors.white
+
+                  : Color(
+                      0xFF3E6F55,
+                    ),
+            ),
+
+            SizedBox(width: 8),
+
+            Text(
+
+              text,
+
+              style: TextStyle(
+
+                fontWeight:
+                    FontWeight.bold,
+
+                color: isSelected
+
+                    ? Colors.white
+
+                    : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // =========================
+  // STATUT CHIP
+  // =========================
+
+  Widget statutChip(
+
+    String value,
+
+    String text,
+
+    Color color,
+
+  ) {
+
+    bool isSelected =
+        selectedStatut == value;
+
+    return GestureDetector(
+
+      onTap: () {
+
+        setState(() {
+
+          selectedStatut = value;
+        });
+      },
+
+      child: Container(
+
+        padding:
+            EdgeInsets.symmetric(
+
+          horizontal: 18,
+
+          vertical: 12,
+        ),
+
+        decoration:
+            BoxDecoration(
+
+          color: isSelected
+
+              ? color
+
+              : Colors.white,
+
+          borderRadius:
+              BorderRadius.circular(
+            18,
           ),
+
+          boxShadow: [
+
+            BoxShadow(
+
+              color:
+                  Colors.black12,
+
+              blurRadius: 5,
+            ),
+          ],
+        ),
+
+        child: Row(
+
+          children: [
+
+            Icon(
+
+              value == "trouvé"
+
+                  ? Icons.check_circle
+
+                  : Icons.error,
+
+              color: isSelected
+
+                  ? Colors.white
+
+                  : color,
+            ),
+
+            SizedBox(width: 8),
+
+            Text(
+
+              text,
+
+              style: TextStyle(
+
+                fontWeight:
+                    FontWeight.bold,
+
+                color: isSelected
+
+                    ? Colors.white
+
+                    : Colors.black,
+              ),
+            ),
+          ],
         ),
       ),
     );

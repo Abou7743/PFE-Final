@@ -253,6 +253,8 @@ class _ConversationsScreenState
 
                                 receiverId:
                                     conv['user_id'],
+                                receiverName:
+                                    conv['nom'],
                               ),
                             ),
                           );
