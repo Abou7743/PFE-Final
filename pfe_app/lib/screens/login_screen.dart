@@ -49,7 +49,7 @@ class _LoginScreenState
               //"http://127.0.0.1:8000/api/login/",
             //),
             Uri.parse(
-              "http://192.168.2.105:8000/api/login/",
+              "http://192.168.80.68:8000/api/login/",
             ),
 
         headers: {
