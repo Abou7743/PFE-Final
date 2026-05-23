@@ -124,6 +124,14 @@ class Document(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
+    # 🔥 STATUT DOCUMENT
+
+    statut = models.CharField(
+
+        max_length=50,
+
+        default="trouvé"
+    )
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
