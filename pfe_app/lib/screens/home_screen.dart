@@ -98,19 +98,23 @@ class _HomeScreenState
 
     final notifResponse =
         await http.get(
-
-      Uri.parse(
-        "http://127.0.0.1:8000/api/notifications-count/$userId/",
-      ),
-    );
+          //Uri.parse(
+            //"http://127.0.0.1:8000/api/notifications-count/$userId/",
+          //),
+          Uri.parse(
+        "    http://192.168.2.105:8000/api/notifications-count/$userId/",
+          ),
+        );
 
     final msgResponse =
         await http.get(
-
-      Uri.parse(
-        "http://127.0.0.1:8000/api/messages-count/$userId/",
-      ),
-    );
+          //Uri.parse(
+            //"http://127.0.0.1:8000/api/messages-count/$userId/",
+          //),
+          Uri.parse(
+             "http://192.168.2.105:8000/api/messages-count/$userId/",
+          ),
+        );
 
     setState(() {
 
