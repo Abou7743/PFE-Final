@@ -19,7 +19,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     String? userId = prefs.getString("id");
 
     final response = await http.post(
-      Uri.parse("http://127.0.0.1:8000/api/change-password/"),
+      Uri.parse("http://192.168.80.68:8000/api/change-password/"),
       body: {
         'id': userId,
         'old_password': oldPass.text,

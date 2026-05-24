@@ -42,7 +42,7 @@ class _NotificationsScreenState
         await http.get(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/notifications/$userId/",
+        "http://192.168.80.68:8000/api/notifications/$userId/",
       ),
     );
 
@@ -65,7 +65,7 @@ class _NotificationsScreenState
         await http.delete(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/delete-notification/$id/",
+        "http://192.168.80.68:8000/api/delete-notification/$id/",
       ),
     );
 

@@ -110,7 +110,7 @@ class _AddDocumentScreenState
       'POST',
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/documents/",
+        "http://192.168.80.68:8000/api/documents/",
       ),
     );
 

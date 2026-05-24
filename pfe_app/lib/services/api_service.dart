@@ -6,7 +6,7 @@ import '../models/objet.dart';
 class ApiService {
 
   // 🔗 URL BASE (WEB OK)
-  static const String baseUrl = "http://127.0.0.1:8000/api";
+  static const String baseUrl = "http://192.168.80.68:8000/api";
 
   // 🔐 HEADERS AVEC TOKEN (SEULEMENT SI EXISTE)
   static Future<Map<String, String>> getHeaders() async {

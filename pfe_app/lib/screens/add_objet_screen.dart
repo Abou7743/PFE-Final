@@ -89,7 +89,7 @@ class _AddObjetScreenState
         prefs.getString("id") ?? "1";
 
     var uri = Uri.parse(
-      "http://127.0.0.1:8000/api/objets/",
+      "http://192.168.80.68:8000/api/objets/",
     );
 
     var request =

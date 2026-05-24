@@ -66,7 +66,7 @@ class _ResetPasswordScreenState
         await http.post(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/reset-password/",
+        "http://192.168.80.68:8000/api/reset-password/",
       ),
 
       body: {

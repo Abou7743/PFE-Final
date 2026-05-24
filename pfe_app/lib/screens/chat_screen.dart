@@ -57,7 +57,7 @@ class _ChatScreenState
         await http.get(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/user-status/${widget.receiverId}/",
+        "http://192.168.80.68:8000/api/user-status/${widget.receiverId}/",
       ),
     );
 
@@ -85,7 +85,7 @@ class _ChatScreenState
         await http.get(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/messages/$senderId/${widget.receiverId}/",
+        "http://192.168.80.68:8000/api/messages/$senderId/${widget.receiverId}/",
       ),
     );
 
@@ -130,7 +130,7 @@ class _ChatScreenState
     await http.post(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/send-message/",
+        "http://192.168.80.68:8000/api/send-message/",
       ),
 
       body: {

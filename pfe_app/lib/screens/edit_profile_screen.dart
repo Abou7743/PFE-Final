@@ -80,7 +80,7 @@ class _EditProfileScreenState
       'POST',
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/update-profile/",
+        "http://192.168.80.68:8000/api/update-profile/",
       ),
     );
 
