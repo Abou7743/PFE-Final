@@ -73,7 +73,7 @@ class _RegisterScreenState
         await http.post(
 
       Uri.parse(
-        "http://127.0.0.1:8000/api/register/",
+        "http://192.168.80.68:8000/api/register/",
       ),
 
       body: {
